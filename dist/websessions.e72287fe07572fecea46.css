@@ -1,0 +1,356 @@
+body {
+    margin: 0;
+    background-color: hsl(0, 0%, 95%);
+}
+
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    background-color: hsl(0, 0%, 27%);
+    box-shadow: 1px 0 5px -2px rgb(180, 180, 180);
+    z-index: 100;
+}
+
+.app-title {
+    font-size: 1.5rem;
+    margin: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 43px;
+}
+
+.nav-header {
+    color: hsl(187, 100%, 42%);
+}
+
+.chat-bubble {
+    height: 60px;
+    width: 60px;
+    border-radius: 60px;
+    background-color: rgb(62, 207, 142);
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    text-align: center;
+    line-height: 60px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.userinfo {
+    display: flex;
+}
+
+.username {
+    color: hsl(187, 100%, 42%);
+    margin-top: 5px;
+}
+
+.btn {
+    height: 40px;
+    width: 75px;
+    font-size: 15px;
+    margin-left: 10px;
+    background-color: rgb(22, 186, 208);
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover, .btn:focus {
+    background-color: rgb(18, 153, 171);
+    color: white;
+    border: 1px solid white;
+}
+
+.livemap-grid {
+    margin-top: 60px;
+    display: grid;
+    gap: 1.5rem;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-template-areas: 
+        'one one one one'
+        'two two two two'
+        'two two two two'
+        'three three three four'
+        'three three three four'
+        'five five five six'
+        'five five five six'
+        'seven seven eight eight';
+    padding-block: 2rem;
+    width: 95%;
+    margin-inline: auto;
+}
+
+.load-info {
+    box-shadow: 2px 2px 2px 2px hsl(0, 0%, 70%);
+    width: 100%;
+    background-color: white;
+}
+
+.map {
+    height: 550px;
+    box-shadow: 2px 2px 2px 2px hsl(0, 0%, 70%);
+    width: 100%;
+    background-color: white;
+}
+
+.sessions {
+    height: 550px;
+    box-shadow: 2px 2px 2px 2px hsl(0, 0%, 70%);
+    width: 100%;
+    background-color: white;
+}
+
+.user-info {
+    height: 550px;
+    box-shadow: 2px 2px 2px 2px hsl(0, 0%, 70%);
+    width: 100%;
+    background-color: white;
+}
+
+.issues-info {
+    height: 550px;
+    box-shadow: 2px 2px 2px 2px hsl(0, 0%, 70%);
+    width: 100%;
+    background-color: white;
+}
+
+.top-countries {
+    height: 550px;
+    box-shadow: 2px 2px 2px 2px hsl(0, 0%, 70%);
+    width: 100%;
+    padding: 1rem;
+    margin-inline: auto;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.top-platforms {
+    box-shadow: 2px 2px 2px 2px hsl(0, 0%, 70%);
+    width: 100%;
+    background-color: white;
+}
+
+.top-browsers {
+    box-shadow: 2px 2px 2px 2px hsl(0, 0%, 70%);
+    width: 100%;
+    background-color: white;
+}
+
+.livemap:nth-child(1) {
+    grid-area: one;
+}
+
+.livemap:nth-child(2) {
+    grid-area: two;
+}
+
+.livemap:nth-child(3) {
+    grid-area: three;
+}
+
+.livemap:nth-child(4) {
+    grid-area: four;
+}
+
+.livemap:nth-child(5) {
+    grid-area: five;
+}
+
+.livemap:nth-child(6) {
+    grid-area: six;
+}
+
+.livemap:nth-child(7) {
+    grid-area: seven;
+}
+
+.livemap:nth-child(8) {
+    grid-area: eight;
+}
+
+.users-container {
+    padding: 1rem;
+}
+
+.users-header {
+    font-size: 1.05em;
+    color: gray;
+}
+
+.sessions-container {
+    padding: 1rem;
+}
+ 
+.sessions-header {
+    font-size: 1.05em;
+    color: gray;
+}
+ 
+.sessions-info {
+    position: relative;
+}
+ 
+.sessions-chart {
+    border: none;
+    height: 200px;
+    width: 200px;
+}
+ 
+.sessions-total {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+ 
+.sessions-total-value {
+    font-size: 2em;
+}
+ 
+.sessions-total-annotation {
+    font-size: 1em;
+    font-weight: 600;
+    color: gray;
+}
+ 
+.sessions-breakdown {
+    color: gray;
+}
+ 
+.session-value-bg {
+    color: black;
+    font-weight: 500;
+    font-size: 1.75rem;
+}
+ 
+.session-value-sm {
+    padding-top: 0.75em;
+}
+
+.info-grid {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-template-areas: 
+        'one two three four';
+    width: 100%;
+    margin-inline: auto;
+    background-color: white;
+}
+
+.info {
+    padding: 1rem;
+}
+
+.info:nth-child(1) {
+    grid-area: one;
+    border-right: 1px lightgray solid;
+}
+
+.info:nth-child(2) {
+    grid-area: two;
+    border-right: 1px lightgray solid;
+}
+
+.info:nth-child(3) {
+    grid-area: three;
+    border-right: 1px lightgray solid;
+}
+
+.info:nth-child(4) {
+    grid-area: four;
+}
+
+.info-session-header {
+    font-size: 1.05rem;
+    color: gray;
+}
+
+.info-session-count {
+    font-size: 2.5em;
+    font-weight: 200;
+}
+
+.previous-day {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-template-areas: 'one two';
+    color: gray;
+}
+
+.previous-day-value {
+    color: black;
+    font-weight: bold;
+}
+
+.change-right {
+    float: right;
+}
+
+.caret {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border: 9px solid transparent;
+}
+
+.positive {
+    color: green;
+}
+
+.negative {
+    color: red;
+}
+
+.issues-container {
+    padding: 1rem;
+}
+
+.issues-header {
+    font-size: 1.05em;
+    color: gray;
+}
+
+.countries-header {
+    font-size: 1.05em;
+    color: gray;
+}
+
+.countries-list {
+    height: 95%;
+    max-height: 95%;
+    overflow-y: scroll;
+    padding-right: 10px;
+}
+
+.country-item {
+    margin-top: 1em;
+}
+
+.charts-container {
+    padding: 1rem;
+}
+
+.charts-header {
+    font-size: 1.05em;
+    color: gray;
+}
+
+.charts-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.wj-flexchart {
+    height: 300px;
+    border: none;
+    width: 50%;
+}

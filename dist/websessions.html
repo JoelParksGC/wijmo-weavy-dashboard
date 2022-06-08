@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Wijmo/Weavy Website Sessions">
+    <title>Website Sessions</title>
+<script defer src="/static/932.2d58dec9a8a7c9cf0b06.js"></script><script defer src="/static/websessions.abc92e2cfa9fdd160229.js"></script><link href="/static/762.0fdf95bfbb71f9d6271f.css" rel="stylesheet"><link href="/static/932.0bed40210dbdf89d091c.css" rel="stylesheet"><link href="/static/websessions.e72287fe07572fecea46.css" rel="stylesheet"></head>
+<body>
+    <nav class="top-nav">
+        <div class="app-title">
+            <span class="nav-header">Website Sessions Dashboard</span>
+            <div class="userinfo">
+                <span class="username" id="username"></span>
+                <form action="/logout" method="POST"><button class="btn">Logout</button></form>
+            </div>
+        </div>
+    </nav>
+    <main class="livemap-grid">
+        <div class="livemap load-info">
+            <div class="info-grid">
+                <div class="info">
+                    <div class="info-session-header">ACTIVE SESSIONS (NOW) <i class="bi bi-question-circle"></i></div>
+                    <div class="info-session-count">112</div>
+                    <div class="info-session previous-day">
+                        <div class="previous-day-count">
+                            <div>30 DAYS AGO</div>
+                            <div class="previous-day-value">148</div>
+                        </div>
+                        <div class="previous-day-change">
+                            <div class="change-right">CHANGE</div><br>
+                            <div class="change-right negative"><i class="bi bi-caret-down-fill"></i>24.32%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info">
+                    <div class="info-session-header">LOAD TIME (NOW) <i class="bi bi-question-circle"></i></div>
+                    <div class="info-session-count">2.08s</div>
+                    <div class="info-session previous-day">
+                        <div class="previous-day-count">
+                            <div>30 DAYS AGO</div>
+                            <div class="previous-day-value">1.7s</div>
+                        </div>
+                        <div class="previous-day-change">
+                            <div class="change-right">CHANGE</div><br>
+                            <div class="change-right positive"><i class="bi bi-caret-up-fill"></i>18.30%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info">
+                    <div class="info-session-header">APDEX SCORE (NOW) <i class="bi bi-question-circle"></i></div>
+                    <div class="info-session-count">1.00</div>
+                    <div class="info-session previous-day">
+                        <div class="previous-day-count">
+                            <div>30 DAYS AGO</div>
+                            <div class="previous-day-value">0.96</div>
+                        </div>
+                        <div class="previous-day-change">
+                            <div class="change-right">CHANGE</div><br>
+                            <div class="change-right positive"><i class="bi bi-caret-up-fill"></i>4.00%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info">
+                    <div class="info-session-header">BOUNCE RATE (NOW) <i class="bi bi-question-circle"></i></div>
+                    <div class="info-session-count">10.2%</div>
+                    <div class="info-session previous-day">
+                        <div class="previous-day-count">
+                            <div>30 DAYS AGO</div>
+                            <div class="previous-day-value">16.4%</div>
+                        </div>
+                        <div class="previous-day-change">
+                            <div class="change-right">CHANGE</div><br>
+                            <div class="change-right negative"><i class="bi bi-caret-down-fill"></i>37.8%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="livemap map"></div>
+        <div class="livemap user-info">
+            <div class="users-container">
+                <div class="users-header">RECENT USERS <i class="bi bi-question-circle"></i></div>
+                <div id="uGrid" style="max-height: 440px; margin-top: 10px;"></div>
+                <div id="uPager"></div>
+            </div>
+        </div>
+        <div class="livemap sessions">
+            <div class="sessions-container">
+                <div class="sessions-info">
+                    <div class="sessions-header">SESSIONS <i class="bi bi-question-circle"></i></div>
+                </div>
+                <div class="sessions-info">
+                    <div class="sessions-total">
+                        <div class="sessions-total-value" id="sessionTotal"></div>
+                        <div class="sessions-total-annotation">IN TOTAL</div>
+                    </div>
+                    <div id="sPie" style="margin-left: auto; margin-right: auto; border: none; height: 200px; width: 200px;"></div>
+                </div>
+                <div class="sessions-info sessions-breakdown">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>NEW</div><div>RETURNING</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="session-value-bg" id="newSessions"></div><div class="session-value-bg" id="returnSessions"></div>
+                    </div>
+                    <hr style="margin-top: 25px;">
+                    <div style="margin-top: 25px;">AVERAGE PAGEVIEWS/SESSION</div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="session-value-bg" id="pageViewValue"></div><div class="session-value-sm" id="pageViewChange"><i class="bi bi-caret-up-fill positive"></i></div>
+                    </div>
+                    <hr style="margin-top: 25px;">
+                    <div style="margin-top: 25px;">AVERAGE SESSION DURATION</div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="session-value-bg" id="sessionsValue"></div><div class="session-value-sm" id="sessionsChange"><i class="bi bi-caret-up-fill positive"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="livemap issues-info">
+            <div class="issues-container">
+                <div class="issues-header">ISSUES REPORTED <i class="bi bi-question-circle"></i></div>
+                <div id="issuesGrid" style="max-height: 480px; margin-top: 10px"></div>
+            </div>
+        </div>
+        <div class="livemap top-countries">
+            <div class="countries">
+                <div class="countries-header">TOP COUNTRIES BY SESSION <i class="bi bi-question-circle"></i></div>
+            </div>
+            <div class="countries countries-list" id="countries-list"></div>
+        </div>
+        <div class="livemap top-platforms">
+            <div class="charts-container">
+                <div class="charts-header">TOP PLATFORMS <i class="bi bi-question-circle"></i></div>
+                <div class="charts-info">
+                    <div id="tpChart"></div>
+                    <div id="tpPie"></div>
+                </div>
+            </div>
+        </div>
+        <div class="livemap top-browsers">
+            <div class="charts-container">
+                <div class="charts-header">TOP BROWSERS <i class="bi bi-question-circle"></i></div>
+                <div class="charts-info">
+                    <div id="tbChart"></div>
+                    <div id="tbPie"></div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-bubble">
+            <i class="bi bi-chat-dots-fill"></i>
+        </div>
+    </main>
+</body>
+</html>

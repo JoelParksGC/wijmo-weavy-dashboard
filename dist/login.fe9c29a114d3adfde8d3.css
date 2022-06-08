@@ -1,0 +1,50 @@
+.main {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+}
+
+.login-form {
+    border: 1px solid black;
+    border-radius: 35px;
+    margin: auto;
+    width: 400px;
+    height: 300px;
+    background-color: rgb(62, 207, 142);
+}
+
+.login-form-control {
+    margin: 0.5rem 0;
+}
+
+.form-padding {
+    padding: 60px 0;
+    width: 70%;
+    margin: auto;
+    text-align: center;
+}
+
+.control-label {
+    font-size: 20px;
+}
+
+.wj-combobox {
+    width: 100%;
+    border: 1px solid black;
+}
+
+.btn {
+    width: 100%;
+    height: 30px;
+    background-color: rgb(22, 186, 208);
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover, .btn:focus {
+    background-color: rgb(18, 153, 171);
+    color: white;
+    border: 1px solid white;
+}
