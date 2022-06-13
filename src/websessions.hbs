@@ -20,7 +20,7 @@
         <div class="livemap load-info">
             <div class="info-grid">
                 <div class="info">
-                    <div class="info-session-header">ACTIVE SESSIONS (NOW) <i class="bi bi-question-circle"></i></div>
+                    <div class="info-session-header">ACTIVE SESSIONS (NOW) <i id="activeSession" class="bi bi-question-circle"></i></div>
                     <div class="info-session-count">112</div>
                     <div class="info-session previous-day">
                         <div class="previous-day-count">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="info">
-                    <div class="info-session-header">LOAD TIME (NOW) <i class="bi bi-question-circle"></i></div>
+                    <div class="info-session-header">LOAD TIME (NOW) <i id="loadTime" class="bi bi-question-circle"></i></div>
                     <div class="info-session-count">2.08s</div>
                     <div class="info-session previous-day">
                         <div class="previous-day-count">
@@ -43,12 +43,12 @@
                         </div>
                         <div class="previous-day-change">
                             <div class="change-right">CHANGE</div><br>
-                            <div class="change-right positive"><i class="bi bi-caret-up-fill"></i>18.30%</div>
+                            <div class="change-right positive"><i id="bounceRate" class="bi bi-caret-up-fill"></i>18.30%</div>
                         </div>
                     </div>
                 </div>
                 <div class="info">
-                    <div class="info-session-header">APDEX SCORE (NOW) <i class="bi bi-question-circle"></i></div>
+                    <div class="info-session-header">APDEX SCORE (NOW) <i id="apdex" class="bi bi-question-circle"></i></div>
                     <div class="info-session-count">1.00</div>
                     <div class="info-session previous-day">
                         <div class="previous-day-count">
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="info">
-                    <div class="info-session-header">BOUNCE RATE (NOW) <i class="bi bi-question-circle"></i></div>
+                    <div class="info-session-header">BOUNCE RATE (NOW) <i id="bounceRate" class="bi bi-question-circle"></i></div>
                     <div class="info-session-count">10.2%</div>
                     <div class="info-session previous-day">
                         <div class="previous-day-count">
@@ -78,11 +78,11 @@
             </div>
         </div>
         <div class="livemap map">
-            <div id="map"></div>
+            <div id="map" style="height: 100%; width: 100%"></div>
         </div>
         <div class="livemap user-info">
             <div class="users-container">
-                <div class="users-header">RECENT USERS <i class="bi bi-question-circle"></i></div>
+                <div class="users-header">RECENT USERS <i id="recentUsers" class="bi bi-question-circle"></i></div>
                 <div id="uGrid" style="max-height: 440px; margin-top: 10px;"></div>
                 <div id="uPager"></div>
             </div>
@@ -90,7 +90,7 @@
         <div class="livemap sessions">
             <div class="sessions-container">
                 <div class="sessions-info">
-                    <div class="sessions-header">SESSIONS <i class="bi bi-question-circle"></i></div>
+                    <div class="sessions-header">SESSIONS <i id="sessions" class="bi bi-question-circle"></i></div>
                 </div>
                 <div class="sessions-info">
                     <div class="sessions-total">
@@ -121,19 +121,19 @@
         </div>
         <div class="livemap issues-info">
             <div class="issues-container">
-                <div class="issues-header">ISSUES REPORTED <i class="bi bi-question-circle"></i></div>
+                <div class="issues-header">ISSUES REPORTED <i id="issuesReported" class="bi bi-question-circle"></i></div>
                 <div id="issuesGrid" style="max-height: 480px; margin-top: 10px"></div>
             </div>
         </div>
         <div class="livemap top-countries">
             <div class="countries">
-                <div class="countries-header">TOP COUNTRIES BY SESSION <i class="bi bi-question-circle"></i></div>
+                <div class="countries-header">TOP COUNTRIES BY SESSION <i id="topCountries" class="bi bi-question-circle"></i></div>
             </div>
             <div class="countries countries-list" id="countries-list"></div>
         </div>
         <div class="livemap top-platforms">
             <div class="charts-container">
-                <div class="charts-header">TOP PLATFORMS <i class="bi bi-question-circle"></i></div>
+                <div class="charts-header">TOP PLATFORMS <i id="topPlatforms" class="bi bi-question-circle"></i></div>
                 <div class="charts-info">
                     <div id="tpChart"></div>
                     <div id="tpPie"></div>
@@ -142,14 +142,17 @@
         </div>
         <div class="livemap top-browsers">
             <div class="charts-container">
-                <div class="charts-header">TOP BROWSERS <i class="bi bi-question-circle"></i></div>
+                <div class="charts-header">TOP BROWSERS <i id="topBrowsers" class="bi bi-question-circle"></i></div>
                 <div class="charts-info">
                     <div id="tbChart"></div>
                     <div id="tbPie"></div>
                 </div>
             </div>
         </div>
-        <div class="chat-bubble">
+        <div class="messenger" id="theMessenger">
+            <p>Messenger Div</p>
+        </div>
+        <div class="chat-bubble" id="chatBubble">
             <i class="bi bi-chat-dots-fill"></i>
         </div>
     </main>

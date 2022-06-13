@@ -5,77 +5,57 @@ import * as wjCore from '@grapecity/wijmo';
 import * as wjGrid from '@grapecity/wijmo.grid';
 import * as wjChart from '@grapecity/wijmo.chart';
 import * as wjGauge from '@grapecity/wijmo.gauge';
+import * as wjMap from '@grapecity/wijmo.chart.map';
 import * as wjInput from '@grapecity/wijmo.input';
 
+import * as dashboardData from './dashboard-data';
+
+const geoJson = require('../custom.geo.json');
+
+// Retrieves the jwt used to connect to Weavy
 async function tokenFactory() {
     var response = await fetch('/token').then((response) => response.json());
     document.getElementById('username').innerText = response.name;
     return response.value;
 }
+var webtoken = tokenFactory();
 
-var jwt = tokenFactory();
-
-function getIssueData(country) {
-    var issues = [
-        { issue: '500 Internal Server Error', status: 'High', message: 'General purpose error: potential server overload' },
-        { issue: '400 Bad Request', status: 'High', message: 'Browser error: corrupted request' },
-        { issue: '408 Request Time-Out', status: 'High', message: 'Slow response time: check server request' },
-        { issue: '403 Forbidden', status: 'Moderate', message: 'Refused access: user attempted to access forbidden directory' },
-        { issue: '501 Not Implemented', status: 'Moderate', message: 'Request refused: unsupported browser feature' },
-        { issue: '401 Unauthorized', status: 'Low', message: 'Login failed: user does not have access' },
-        { issue: '404 Not Found', status: 'Low', message: 'Page not returned: check status of requested page' },
-    ], data = [];
-    var reportedIssues = [
-        { country: 'United States', issuesReported: 72 },
-        { country: 'Canada', issuesReported: 35 },
-        { country: 'Mexico', issuesReported: 24 },
-        { country: 'Brazil', issuesReported: 7 },
-        { country: 'Peru', issuesReported: 2 },
-        { country: 'United Kingdom', issuesReported: 29 },
-        { country: 'France', issuesReported: 19 },
-        { country: 'Germany', issuesReported: 15 },
-        { country: 'Spain', issuesReported: 9 },
-        { country: 'Italy', issuesReported: 6 },
-        { country: 'Netherlands', issuesReported: 4 },
-        { country: 'Finland', issuesReported: 7 },
-        { country: 'Denmark', issuesReported: 9 },
-        { country: 'Norway', issuesReported: 14 },
-        { country: 'Poland', issuesReported: 3 },
-        { country: 'Russia', issuesReported: 11 },
-        { country: 'Ukraine', issuesReported: 8 },
-        { country: 'China', issuesReported: 18 },
-        { country: 'Japan', issuesReported: 17 },
-        { country: 'Australia', issuesReported: 7 },
-    ];    
-    for(var i = 0; i < reportedIssues.length; i++) {
-        if(reportedIssues[i].country == country) {
-            for(var j = 0; j < reportedIssues[i].issuesReported; j++) {
-                var selector = Math.round(Math.random() * (6));
-                data.push({
-                    country: country,
-                    issue: issues[selector].issue,
-                    status: issues[selector].status,
-                    message: issues[selector].message
-                });
-            }
-            break;
-        }
+// Handles visibility of the Weavy Messenger control
+document.getElementById('chatBubble').addEventListener('click', () => {
+    if(document.getElementById('theMessenger').style.visibility == "" || document.getElementById('theMessenger').style.visibility == "hidden") {
+        document.getElementById('theMessenger').style.visibility = "visible";
     }
-    return data;
+    else if(document.getElementById('theMessenger').style.visibility == "visible") {
+        document.getElementById('theMessenger').style.visibility = "hidden";
+    }
+});
+
+// Generates tooltips to display when hovering icons
+dashboardData.generateTooltips();
+
+// Generates data and settings for datamap
+var countryMapData = dashboardData.getCountryMapData();
+var dataMap = new Map();
+Array.prototype.forEach.call(countryMapData, el => {
+    dataMap.set(el.Country, parseFloat(el.AverageResponseTime));
+});
+var hitTestInfo, selectedId;
+var selectedColor = '#188d9b';
+
+function updateGrids(name) {
+    if(validCountry(name)) {
+        uCollectionView.sourceCollection = dashboardData.getUsersData(name)
+        iGrid.collectionView.sourceCollection = dashboardData.getIssueData(name);
+    }
 }
 
-function getUsersData(country) {
-    var data = [], platforms = ['Desktop', 'Mobile', 'Tablet', 'Other'], browsers = ['Chrome', 'Firefox', 'Edge', 'Safari', 'Other'];
-    for(var i = 0; i < 200; i++) {
-        data.push({
-            country: country,
-            sessionDuration: Math.round(Math.random() * 7) + 'm ' + Math.round(Math.random() * 60) + 's',
-            ipAddress: Math.round(Math.random() * (999 - 1) + 1) + '.' + Math.round(Math.random() * (999 - 1) + 1) + '.' + Math.round(Math.random() * (999 - 1) + 1) + '.' + Math.round(Math.random() * (999 - 1) + 1),
-            platform: platforms[Math.round(Math.random() * (3))],
-            browser: browsers[Math.round(Math.random() * (4))]
-        });
+function validCountry(name) {
+    for(var i = 0; i < countryMapData.length; i++) {
+        if(countryMapData[i].Country == name) {
+            return true;
+        }
     }
-    return data;
+    return false;
 }
 
 // Generates the gauge controls
@@ -112,12 +92,59 @@ function generateGauges(countriesArray) {
     }
 }
 
-// Users Data
-var uCollectionView = new wjCore.CollectionView(getUsersData('United States'), {
-    pageSize: 25
-})
+generateGauges(dashboardData.getTopCountryData());
 
-// Users Control
+// Map Control
+var map = new wjMap.FlexMap('#map', {
+    header: 'Breakdown by Country',
+    selectionMode: 2,
+    layers: [
+        new wjMap.GeoMapLayer({
+            itemsSource: geoJson,
+            colorScale: new wjMap.ColorScale({
+                colors: wjChart.Palettes.Diverging.RdYlGn,
+                binding: (o) => dataMap.get(o.properties.name),
+                scale: (v) => 1-v,
+            })
+        })
+    ]
+});
+
+// Events for the map to display selected country
+map.hostElement.addEventListener('mousedown', (e) => {
+    hitTestInfo = map.hitTest(e);
+    if(hitTestInfo._item !== undefined) {
+        updateGrids(hitTestInfo._item.name);
+        let el = document.elementFromPoint(e.x, e.y);
+        let id = el ? el.getAttribute('wj-map:id') : undefined;
+        selectedId = id;
+        map.invalidate(true);
+    }
+});
+
+map.rendered.addHandler((s, e) => {
+    let layer = map.layers[0];
+    let g = layer._g;
+    if(g && selectedId && validCountry(hitTestInfo._item.name)) {
+        let list = [];
+        for(var i = 0; i < g.childNodes.length; i++) {
+            const node = g.childNodes[i];
+            let id = node.getAttribute('wj-map:id');
+            if(id === selectedId) {
+                node.setAttribute('fill', selectedColor);
+                list.push(node);
+            }
+        }
+        list.forEach((el) => el.parentNode.appendChild(el));
+    }
+});
+
+// Users data CollectionView
+var uCollectionView = new wjCore.CollectionView(dashboardData.getUsersData('United States'), {
+    pageSize: 25
+});
+
+// Users FlexGrid Control
 var uGrid = new wjGrid.FlexGrid('#uGrid', {
     itemsSource: uCollectionView,
     isReadOnly: true,
@@ -132,6 +159,7 @@ var uGrid = new wjGrid.FlexGrid('#uGrid', {
     ]
 });
 
+// FlexGrid Pager
 var uPager = new wjInput.CollectionViewNavigator('#uPager', {
     byPage: true,
     headerFormat: 'Page {currentPage:n0} of {pageCount:n0}',
@@ -174,7 +202,7 @@ var sPie = new wjChart.FlexPie('#sPie', {
 });
 
 // Issues Data
-var iData = getIssueData('United States');
+var iData = dashboardData.getIssueData('United States');
 
 // Issues Control
 var iGrid = new wjGrid.FlexGrid('#issuesGrid', {
@@ -190,52 +218,11 @@ var iGrid = new wjGrid.FlexGrid('#issuesGrid', {
     ]
 });
 
-// Top Country Data
-var tcData = [
-    { name: 'United States', visits: 21.9, percentage: 19.7 },
-    { name: 'Japan', visits: 13.8, percentage: 12.4 },
-    { name: 'Canada', visits: 12.7, percentage: 11.4 },
-    { name: 'China', visits: 11.3, percentage: 10.2 },
-    { name: 'United Kingdom', visits: 7.9, percentage: 7.1 },
-    { name: 'Russia', visits: 5.9, percentage: 5.3 },
-    { name: 'Germany', visits: 5.9, percentage: 5.3 },
-    { name: 'Mexico', visits: 4.2, percentage: 3.8 },
-    { name: 'France', visits: 3.4, percentage: 3.1 },
-    { name: 'Ukraine', visits: 3.1, percentage: 2.8 }
-];
-
-generateGauges(tcData);
-
-// Platform and Browser Data
-var tpLoadTimeData = [
-    { platform: "Desktop", prevMonth: 1.58, curMonth: 1.49 },
-    { platform: "Phone", prevMonth: 2.01, curMonth: 1.96 },
-    { platform: "Tablet", prevMonth: 2.16, curMonth: 2.41 },
-    { platform: "Other", prevMonth: 2.53, curMonth: 2.65 }
-];
-var tpSessionData = [
-    { platform: "Desktop", sessions: 68379 },
-    { platform: "Phone", sessions: 21478 },
-    { platform: "Tablet", sessions: 14523 },
-    { platform: "Other", sessions: 7520 }
-];
-var tbLoadTimeData = [
-    { platform: "Chrome", prevMonth: 1.68, curMonth: 1.52 },
-    { platform: "Firefox", prevMonth: 1.93, curMonth: 1.71 },
-    { platform: "Edge", prevMonth: 2.25, curMonth: 2.38 },
-    { platform: "Safari", prevMonth: 2.11, curMonth: 2.03 },
-    { platform: "Other", prevMonth: 2.56, curMonth: 2.49 },
-];
-var tbSessionData = [
-    { platform: "Chrome", sessions: 34520 },
-    { platform: "Firefox", sessions: 29586 },
-    { platform: "Edge", sessions: 13793 },
-    { platform: "Safari", sessions: 22136 },
-    { platform: "Other", sessions: 11865 },
-];
-var tpPlatformTooltip = "Breakdown of Sessions by Platform";
+// Chart data and styles
 var piePalette = ["#a8ddb5", "#7bccc4", "#4eb3d3", "#2b8cbe", "#0868ac"];
 var chartPalette = ["#2b8cbe", "#0868ac"];
+var platformData = dashboardData.getPlatformData();
+var browserData = dashboardData.getBrowserData();
 
 // Top Platform Controls
 var tpChart = new wjChart.FlexChart('#tpChart', {
@@ -255,7 +242,7 @@ var tpChart = new wjChart.FlexChart('#tpChart', {
         }
     ],
     palette: chartPalette,
-    itemsSource: tpLoadTimeData,
+    itemsSource: platformData[0],
     selectionMode: wjChart.SelectionMode.Point
 });
 
@@ -263,7 +250,7 @@ var tpPie = new wjChart.FlexPie('#tpPie', {
     header: "Sessions by Platform",
     binding: "sessions",
     bindingName: "platform",
-    itemsSource: tpSessionData,
+    itemsSource: platformData[1],
     palette: piePalette
 })
 
@@ -285,7 +272,7 @@ var tbChart = new wjChart.FlexChart('#tbChart', {
         }
     ],
     palette: chartPalette,
-    itemsSource: tbLoadTimeData,
+    itemsSource: browserData[0],
     selectionMode: wjChart.SelectionMode.Point
 });
 
@@ -293,6 +280,6 @@ var tbPie = new wjChart.FlexPie('#tbPie', {
     header: "Sessions by Browser",
     binding: "sessions",
     bindingName: "platform",
-    itemsSource: tbSessionData,
+    itemsSource: browserData[1],
     palette: piePalette
-})
+});
